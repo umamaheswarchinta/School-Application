@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+    <p id="demo4" style="color:red">enter the values in the fields </p>
+    Sname:<input id="demo2"></br>
+    Class:<input id="demo3"></br>
+    <button type="button" onclick="student()">SUBMIT</button>
+    <script>
+        var sname;
+        var Class;
+    
+        var s = { sname:"", Class:"", };
+        function student() {
+            var text;
+            sname = document.getElementById("demo2").value;
+            Class = document.getElementById("demo3").value;
+            if (isNaN(Class) || Class < 0 || Class == "") {
+                text = "Input not valid";
+                document.getElementById("demo4").innerHTML = text;
+            } else {
+                s.sname = sname;
+                s.Class = Class;
+               
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", '@Url.Action("AddStudent", "Student")', true);
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo4").innerHTML = this.responseText
+                    }
+                };
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify(s));
+
+                text = "Record Submitted";
+                document.getElementById("demo4").innerHTML = text;
+            }
+        }
+    </script>
+
+</body>
+</html>

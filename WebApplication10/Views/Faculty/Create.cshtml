@@ -1,0 +1,73 @@
+﻿@model WebApplication10.Models.Faculty
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Faculty</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    Fname:<input type="text" id="demo" required><br/>
+    Subject:<input type="text" id="demo1" required /><br/>
+    Subcode:<input type="text" id="demo2" required /><br/>
+    Email:<input type="text" id="demo3" required /><br/>
+    Address:<input type="text" id="demo4" required /><br/>
+    Phoneno:<input type="text" id="demo5" required /><br/>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Create" style="align-self:center" class="btn btn-default" onclick="operation(this)" />
+            <script>
+                var Fname;
+                var Subject;
+                var Subcode;
+                var Email;
+                var Address;
+                var Phoneno;
+                    var f = { Fname: "",Subject:"",Subcode:"",Email:"",Address:"",Phoneno:"" };
+                function operation(e) {
+                   // e.preventDefault();
+                        Fname = document.getElementById("demo").value;
+                        Subject = document.getElementById("demo1").value;
+                        Subcode = document.getElementById("demo2").value;
+                        Email = document.getElementById("demo3").value;
+                        Address = document.getElementById("demo4").value;
+                        Phoneno = document.getElementById("demo5").value;
+                        f.Fname = Fname;
+                        f.Subject = Subject;
+                        f.Subcode = Subcode
+                        f.Email = Email;
+                        f.Address = Address;
+                        f.Phoneno = Phoneno;
+
+                    var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", '@Url.Action("Create", "Faculty")', true);
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        
+                    }
+                };
+                        xhttp.setRequestHeader("Content-type", "application/json");
+                        xhttp.send(JSON.stringify(f));
+                    }
+            </script>
+            <p id="demo6" style="color:red">Hii</p>
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

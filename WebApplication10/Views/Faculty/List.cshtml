@@ -1,0 +1,99 @@
+﻿@model IEnumerable<WebApplication10.Models.Faculty>
+
+@{
+
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    <script>
+            var searchStr;
+        var s = { search: "" };
+        var json;
+
+        function search() {
+
+            searchStr = document.getElementById("demo").value;
+            searchStr = "%" + searchStr + "%";
+            s.search = search;
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", '@Url.Action("List", "Faculty")' + '?s=' + searchStr, true);
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo2").innerHTML = "";
+                        document.getElementById("demo1").innerHTML = this.responseText;
+
+                        var obj = JSON.parse(this.responseText);
+                        var table= "<table><thead></thead><tr><th>Fid</th></tr><tbody>"
+                        //console.log(obj);
+                        for (var i = 0; i < obj.length; i++) {
+                            console.log(obj[i]["Fid"]);
+                            table = table + "<tr><td>" + obj[i]["Fid"] + "</td></tr>"
+                        }
+                        table = table + "</tbody></table>";
+
+                        document.getElementById("demo1").innerHTML = table;
+                    }
+                };
+                //xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+
+        }
+    </script>
+
+
+
+
+</p>
+<input type="search" id="demo">
+<button type="button" id="demo3" onclick="search()">SUBMIT</button>
+<p id="demo1"></p>
+<table id="demo4"></table>
+
+
+<table class="table" id="demo2">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Fid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subcode)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subcode)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Fid }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Fid }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Fid })
+            </td>
+        </tr>
+    }
+
+
+</table>
